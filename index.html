@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Hollow Barbershop</title>
+<meta name="description" content="Barbershop at 94-12 Astoria Blvd, East Elmhurst, Queens. Fades, tapers, beard work. Open 7 days.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: the name "fades" down the hero like a skin fade (heavy to hairline), then a clipper-guard
+   chart you can tap, the service board, and hours + directions side by side. */
+:root {
+  --bg: #EEF1F0;        /* chrome white */
+  --surface: #F8FAF9;
+  --ink: #17120F;
+  --muted: #5B6360;
+  --line: #CDD4D2;
+  --oxblood: #6E1A24;   /* barber-chair leather */
+  --oxblood-ink: #FFFFFF;
+  --tonic: #127C7A;     /* disinfectant-jar teal */
+  --open: #1E7A46;
+
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --body: "Hanken Grotesk", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131011; --surface: #1C1819; --ink: #EFE9E5; --muted: #A29A96; --line: #332C2D;
+    --oxblood: #C24A58; --oxblood-ink: #160A0C; --tonic: #46C2BE; --open: #5CCB8A;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--tonic); outline-offset: 3px; border-radius: 3px; }
+.wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+.eyebrow {
+  font: 700 0.74rem/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 78%;
+  font-size: clamp(2.3rem, 5.5vw, 3.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 10px 0 0;
+  text-wrap: balance;
+}
+
+/* Preview notice */
+.preview { background: var(--tonic); color: var(--bg); font: 600 0.85rem/1.4 var(--body); text-align: center; }
+.preview .wrap { padding-block: 8px; }
+
+/* Status strip */
+.strip { border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+.strip .wrap { display: flex; flex-wrap: wrap; gap: 6px 22px; justify-content: space-between; padding-block: 10px; }
+.status { display: inline-flex; align-items: center; gap: 9px; font-weight: 600; }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.status.open i { background: var(--open); box-shadow: 0 0 0 4px color-mix(in srgb, var(--open) 22%, transparent); }
+.status.closed i { background: var(--oxblood); }
+.strip .mono { font-family: var(--mono); font-weight: 500; }
+
+/* Hero: the fade stack */
+.hero .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 36px;
+  padding-block: 52px 64px;
+}
+.fade { margin: 0; font-family: var(--display); text-transform: uppercase; line-height: 0.84; letter-spacing: -0.015em; overflow: hidden; padding-bottom: 0.1em; }
+.fade span { display: block; font-size: clamp(2rem, 11vw, 8.6rem); white-space: nowrap; }
+.fade .l1 { font-weight: 900; font-stretch: 112%; color: var(--ink); }
+.fade .l2 { font-weight: 560; font-stretch: 100%; color: color-mix(in srgb, var(--ink) 62%, var(--bg)); }
+.fade .l3 { font-weight: 260; font-stretch: 88%; color: color-mix(in srgb, var(--ink) 34%, var(--bg)); }
+.fade .l4 { font-weight: 100; font-stretch: 76%; color: color-mix(in srgb, var(--ink) 16%, var(--bg)); }
+.fade .l1 em { font-style: normal; color: var(--oxblood); }
+.fade span { animation: rise 0.9s cubic-bezier(.2,.7,.2,1) both; }
+.fade .l2 { animation-delay: .08s; } .fade .l3 { animation-delay: .16s; } .fade .l4 { animation-delay: .24s; }
+@keyframes rise { from { transform: translateY(18px); } to { transform: none; } }
+
+.hero-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-areas: "eyebrow eyebrow" "copy actions" "chips actions";
+  gap: 16px 48px;
+  align-items: start;
+  border-top: 2px solid var(--ink);
+  padding-top: 22px;
+  min-width: 0;
+}
+.hero-side .eyebrow { grid-area: eyebrow; }
+.hero-side p { grid-area: copy; }
+.hero-side .chips { grid-area: chips; }
+.hero-side .actions { grid-area: actions; justify-content: flex-end; }
+@media (max-width: 860px) {
+  .hero-side { grid-template-columns: minmax(0, 1fr); grid-template-areas: "eyebrow" "copy" "chips" "actions"; }
+  .hero-side .actions { justify-content: flex-start; }
+}
+.hero-side p { margin: 0; font-size: 1.15rem; max-width: 36ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: 600 0.82rem/1 var(--body);
+  padding: 8px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+}
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 20px;
+  border-radius: 4px;
+  font: 600 1rem/1 var(--body);
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  transition: transform .15s ease;
+}
+.btn.primary { background: var(--oxblood); border-color: var(--oxblood); color: var(--oxblood-ink); }
+.btn:hover { transform: translateY(-2px); }
+.btn .mono { font-family: var(--mono); font-weight: 500; }
+
+/* Guard chart */
+section { padding-block: 72px 0; }
+.head { display: flex; flex-wrap: wrap; gap: 14px 40px; align-items: end; justify-content: space-between; margin-bottom: 30px; }
+.head p { margin: 0; max-width: 44ch; color: var(--muted); }
+
+.guards {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 28px 28px 24px;
+}
+.guard-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; align-items: end; }
+.guard {
+  appearance: none; background: none; border: 0; padding: 0; cursor: pointer;
+  display: grid; gap: 10px; justify-items: center; color: var(--ink);
+  font: inherit;
+}
+.guard .bar {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 5px);
+  opacity: 0.35;
+  transition: opacity .2s ease, background-color .2s ease;
+}
+.guard .num { font: 700 1.05rem/1 var(--mono); }
+.guard .len { font: 500 0.74rem/1 var(--mono); color: var(--muted); }
+.guard:hover .bar { opacity: 0.6; }
+.guard[aria-pressed="true"] .bar {
+  opacity: 1;
+  background: repeating-linear-gradient(90deg, var(--oxblood) 0 2px, transparent 2px 5px);
+}
+.guard[aria-pressed="true"] .num { color: var(--oxblood); }
+.baseline { height: 2px; background: var(--ink); margin-top: 0; }
+.guard-read {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: baseline;
+  margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--line);
+}
+.guard-read b { font: 800 2.4rem/1 var(--display); font-stretch: 80%; color: var(--oxblood); grid-row: span 2; }
+.guard-read strong { font-weight: 600; font-size: 1.05rem; }
+.guard-read span { color: var(--muted); font-size: 0.95rem; }
+
+/* Service board */
+.board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; }
+.svc { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.svc h3 { margin: 0; font: 700 1.5rem/1.1 var(--display); font-stretch: 88%; text-transform: uppercase; }
+.svc .price { font: 700 1.15rem/1.3 var(--mono); color: var(--tonic); font-variant-numeric: tabular-nums; }
+.svc p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.95rem; }
+.fine { margin: 16px 0 0; font-size: 0.85rem; color: var(--muted); }
+
+/* Visit */
+.visit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 26px 28px; min-width: 0; }
+.panel h3 { margin: 0 0 14px; font: 800 1.6rem/1 var(--display); font-stretch: 80%; text-transform: uppercase; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+td { padding: 9px 0; border-bottom: 1px solid var(--line); }
+td:last-child { text-align: right; font-family: var(--mono); font-weight: 500; font-size: 0.95rem; }
+tr.today td { color: var(--oxblood); font-weight: 700; }
+tr.today td:first-child::after { content: " · today"; font: 700 0.72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.addr { font-size: 1.25rem; font-weight: 600; margin: 0; }
+.panel p { margin: 6px 0 0; }
+.rating { display: flex; align-items: baseline; gap: 12px; margin: 22px 0 6px; }
+.rating b { font: 800 3rem/1 var(--display); font-stretch: 80%; }
+.stars { color: var(--oxblood); letter-spacing: 2px; font-size: 1.1rem; }
+.panel .actions { margin-top: 20px; }
+.copy { font: 600 0.9rem var(--body); padding: 10px 14px; border-radius: 4px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+
+footer { margin-top: 80px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; padding-block: 24px 30px; font-size: 0.88rem; color: var(--muted); }
+footer strong { font: 800 1.1rem var(--display); font-stretch: 90%; text-transform: uppercase; color: var(--ink); }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 36px 48px; }
+  .board, .visit { grid-template-columns: minmax(0, 1fr); }
+  section { padding-block: 56px 0; }
+}
+@media (max-width: 520px) {
+  .guards { padding: 20px 14px 18px; }
+  .guard-row { gap: 6px; }
+  .guard .len { font-size: 0.62rem; }
+  .panel { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade span { animation: none; }
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="preview"><div class="wrap">Preview site made for The Hollow Barbershop. Not the shop's official website, and prices are samples.</div></div>
+
+<div class="strip">
+  <div class="wrap">
+    <span class="status" id="status"><i></i><span id="status-text">Open 7 days a week</span></span>
+    <span>94-12 Astoria Blvd · <span class="mono">(347) 507-1719</span></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="fade" aria-label="The Hollow Barbershop">
+      <span class="l1" aria-hidden="true">The <em>Hollow</em></span>
+      <span class="l2" aria-hidden="true">Barber</span>
+      <span class="l3" aria-hidden="true">Shop</span>
+      <span class="l4" aria-hidden="true">Est. Queens</span>
+    </h1>
+    <div class="hero-side">
+      <div class="eyebrow">East Elmhurst · Astoria Blvd &amp; 94th St</div>
+      <p>Fades, tapers, line-ups and beard work, done carefully by barbers who know the neighborhood. Open every day of the week.</p>
+      <div class="chips">
+        <span class="chip">Latino-owned</span>
+        <span class="chip">LGBTQ+ friendly</span>
+        <span class="chip">Open 7 days</span>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="tel:+13475071719">Call to book <span class="mono">(347) 507-1719</span></a>
+        <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=The+Hollow+Barbershop+94-12+Astoria+Blvd+East+Elmhurst+NY" target="_blank" rel="noopener">Get directions</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="fade">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="eyebrow">Know your number</div>
+          <h2>Pick your guard</h2>
+        </div>
+        <p>Not sure what to ask for? Tap a guard to see how much length it leaves. Tell your barber the number, or just show them this.</p>
+      </div>
+      <div class="guards">
+        <div class="guard-row" id="guards" role="group" aria-label="Clipper guard sizes"></div>
+        <div class="baseline" aria-hidden="true"></div>
+        <div class="guard-read" aria-live="polite">
+          <b id="g-num">#2</b>
+          <strong id="g-name">Classic short sides</strong>
+          <span id="g-desc">Leaves 1/4 in (6 mm). Covers the scalp fully, easy to grow out.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="eyebrow">Service board</div>
+          <h2>Cuts &amp; beard work</h2>
+        </div>
+        <p>Call ahead to check the wait, or come by during open hours.</p>
+      </div>
+      <div class="board">
+        <div class="svc"><h3>Skin fade</h3><span class="price">$35</span><p>Down to the skin, blended up through the guards</p></div>
+        <div class="svc"><h3>Taper</h3><span class="price">$30</span><p>Clean edges at the neck and sideburns, length kept on top</p></div>
+        <div class="svc"><h3>Classic cut</h3><span class="price">$30</span><p>Scissors or clippers, your usual, done right</p></div>
+        <div class="svc"><h3>Beard trim &amp; line-up</h3><span class="price">$15</span><p>Shaped with a razor edge and hot towel</p></div>
+        <div class="svc"><h3>Cut + beard</h3><span class="price">$45</span><p>Any cut plus a full beard trim</p></div>
+        <div class="svc"><h3>Kids cut</h3><span class="price">$25</span><p>12 and under</p></div>
+      </div>
+      <p class="fine">Sample prices for this preview. The shop sets the final menu.</p>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="eyebrow">Come through</div>
+          <h2>Hours &amp; location</h2>
+        </div>
+      </div>
+      <div class="visit">
+        <div class="panel">
+          <h3>Open 7 days</h3>
+          <table id="hours">
+            <tbody>
+              <tr data-day="1"><td>Monday</td><td>10 am – 9 pm</td></tr>
+              <tr data-day="2"><td>Tuesday</td><td>10 am – 9:30 pm</td></tr>
+              <tr data-day="3"><td>Wednesday</td><td>10 am – 9 pm</td></tr>
+              <tr data-day="4"><td>Thursday</td><td>10 am – 9 pm</td></tr>
+              <tr data-day="5"><td>Friday</td><td>10 am – 9 pm</td></tr>
+              <tr data-day="6"><td>Saturday</td><td>10 am – 9:30 pm</td></tr>
+              <tr data-day="0"><td>Sunday</td><td>10 am – 8:30 pm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>Find the shop</h3>
+          <p class="addr">94-12 Astoria Blvd</p>
+          <p>East Elmhurst, NY 11369</p>
+          <div class="rating">
+            <b>4.4</b>
+            <div><div class="stars" aria-hidden="true">★★★★☆</div><span>32 Google reviews</span></div>
+          </div>
+          <p style="color:var(--muted)">Regulars mention the service, the atmosphere, and fair prices.</p>
+          <div class="actions">
+            <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=The+Hollow+Barbershop+94-12+Astoria+Blvd+East+Elmhurst+NY" target="_blank" rel="noopener">Read the reviews</a>
+            <button class="copy" id="copy" type="button">Copy phone number</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>The Hollow Barbershop</strong>
+    <span>94-12 Astoria Blvd, East Elmhurst, NY 11369 · (347) 507-1719 · Preview site, not yet official</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Real hours from the shop's Google listing, minutes after midnight, keyed by getDay().
+  var HOURS = { 0: [600, 1230], 1: [600, 1260], 2: [600, 1290], 3: [600, 1260], 4: [600, 1260], 5: [600, 1260], 6: [600, 1290] };
+  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  function fmt(m) {
+    var h = Math.floor(m / 60), mm = m % 60, h12 = h % 12 || 12;
+    return h12 + (mm ? ":" + (mm < 10 ? "0" : "") + mm : "") + (h >= 12 ? " pm" : " am");
+  }
+  var now = new Date(), d = now.getDay(), m = now.getHours() * 60 + now.getMinutes(), t = HOURS[d];
+  var st = document.getElementById("status"), tx = document.getElementById("status-text");
+  if (m >= t[0] && m < t[1]) {
+    st.classList.add("open");
+    tx.textContent = "Open now · until " + fmt(t[1]);
+  } else {
+    st.classList.add("closed");
+    var nd = m < t[0] ? d : (d + 1) % 7;
+    tx.textContent = "Closed · opens " + (nd === d ? "today" : "tomorrow") + " at " + fmt(HOURS[nd][0]);
+  }
+  var row = document.querySelector('#hours tr[data-day="' + d + '"]');
+  if (row) row.classList.add("today");
+
+  // Clipper guard chart.
+  var GUARDS = [
+    { n: "#0", len: "skin", mm: 0, name: "Skin / bald fade", desc: "Foil shaver to the skin. The base of a skin fade." },
+    { n: "#0.5", len: "1/16 in", mm: 1.5, name: "Shadow fade", desc: "Leaves 1/16 in (1.5 mm). Just a shadow of hair." },
+    { n: "#1", len: "1/8 in", mm: 3, name: "Low fade base", desc: "Leaves 1/8 in (3 mm). Tight on the sides, scalp shows through." },
+    { n: "#1.5", len: "3/16 in", mm: 4.5, name: "Blend guard", desc: "Leaves 3/16 in (4.5 mm). Used to blend between #1 and #2." },
+    { n: "#2", len: "1/4 in", mm: 6, name: "Classic short sides", desc: "Leaves 1/4 in (6 mm). Covers the scalp fully, easy to grow out." },
+    { n: "#3", len: "3/8 in", mm: 10, name: "Buzz cut", desc: "Leaves 3/8 in (10 mm). A short buzz all over or a soft taper." },
+    { n: "#4", len: "1/2 in", mm: 13, name: "Longer buzz", desc: "Leaves 1/2 in (13 mm). Short but with texture on top." }
+  ];
+  var row2 = document.getElementById("guards");
+  var maxH = 150;
+  GUARDS.forEach(function (g, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "guard";
+    b.id = "guard-" + i;
+    b.setAttribute("aria-pressed", g.n === "#2" ? "true" : "false");
+    b.setAttribute("aria-label", g.n + " guard, " + g.len);
+    var h = Math.max(4, Math.round(8 + (g.mm / 13) * (maxH - 8)));
+    b.innerHTML = '<span class="num">' + g.n + '</span><span class="len">' + g.len + '</span><span class="bar" style="height:' + h + 'px"></span>';
+    b.addEventListener("click", function () {
+      row2.querySelectorAll(".guard").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      document.getElementById("g-num").textContent = g.n;
+      document.getElementById("g-name").textContent = g.name;
+      document.getElementById("g-desc").textContent = g.desc;
+    });
+    row2.appendChild(b);
+  });
+
+  var copy = document.getElementById("copy");
+  copy.addEventListener("click", function () {
+    var num = "(347) 507-1719";
+    var done = function () { copy.textContent = "Copied"; setTimeout(function () { copy.textContent = "Copy phone number"; }, 1800); };
+    try { navigator.clipboard.writeText(num).then(done, function () { copy.textContent = num; }); }
+    catch (e) { copy.textContent = num; }
+  });
+})();
+</script>
+</body>
+</html>
